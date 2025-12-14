@@ -51,7 +51,7 @@ def twoSum(nums: List[int], target: int) -> List[int]:
 
 ### Prerequisites
 
-- Python 3.11+
+- Python 3.13+
 - Docker Desktop (for code execution)
 - pip
 
@@ -148,7 +148,7 @@ See `TWO_SUM_EXAMPLE.md` for a complete example.
 Edit `config.py` to customize:
 
 ```python
-DOCKER_IMAGE = 'python:3.11-slim'  # Docker image for execution
+DOCKER_IMAGE = 'python:3.13-slim'  # Docker image for execution
 DOCKER_TIMEOUT = 2  # Timeout per test case (seconds)
 DOCKER_MEMORY_LIMIT = '256m'  # Memory limit per container
 ```

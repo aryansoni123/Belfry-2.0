@@ -108,7 +108,7 @@ The system provides the following major functions:
 ### 2.4 Operating Environment
 - **Server**: Linux/Windows/Mac with Docker support
 - **Client**: Modern web browsers (Chrome, Firefox, Safari, Edge)
-- **Python**: Version 3.8 or higher
+- **Python**: Version 3.13
 - **Docker**: Docker Desktop (Windows/Mac) or Docker Engine (Linux)
 
 ### 2.5 Design and Implementation Constraints
@@ -122,7 +122,7 @@ The system provides the following major functions:
 
 ### 2.6 Assumptions and Dependencies
 - Docker Desktop/Engine is installed and running
-- Python 3.8+ is available
+- Python 3.13 is available
 - Internet connection for CDN resources (Tailwind, Pyodide)
 - Modern browser with JavaScript enabled
 
@@ -417,7 +417,7 @@ belfry/
 - Docker-capable system
 
 ### 6.3 Software Interfaces
-- **Python 3.8+**: Runtime environment
+- **Python 3.13**: Runtime environment
 - **Docker**: Containerization platform
 - **SQLite**: Database system
 - **Web Browser**: Client interface
@@ -434,7 +434,7 @@ belfry/
 - Must use Flask framework
 - Must use SQLite database
 - Must use Docker for code execution
-- Must support Python 3.x only (initially)
+- Must support Python 3.13 only (initially)
 - Must use Tailwind CSS for styling
 
 ### 7.2 Business Constraints
