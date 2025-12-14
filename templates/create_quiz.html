@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}Create Quiz - Belfry{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Create New Quiz</h1>
+        <p class="text-gray-600">Add a new coding problem for your students</p>
+    </div>
+    
+    <div class="card p-8">
+        <form method="POST" action="{{ url_for('teacher.create_quiz') }}">
+            <div class="mb-6">
+                <label for="title" class="block text-gray-700 font-medium mb-2 text-sm">Quiz Title *</label>
+                <input type="text" 
+                       id="title" 
+                       name="title" 
+                       required
+                       class="input-field w-full"
+                       placeholder="e.g., Sum of Two Numbers">
+            </div>
+            
+            <div class="mb-6">
+                <label for="description" class="block text-gray-700 font-semibold mb-2">Description</label>
+                <textarea id="description" 
+                          name="description" 
+                          rows="2"
+                          class="input-field w-full"
+                          placeholder="Brief description of the problem"></textarea>
+            </div>
+            
+            <div class="mb-6">
+                <label for="problem_type" class="block text-gray-700 font-semibold mb-2">Problem Type *</label>
+                <select id="problem_type" 
+                        name="problem_type" 
+                        required
+                        class="input-field w-full"
+                        onchange="toggleProblemType()">
+                    <option value="function">Function-based (LeetCode-style)</option>
+                    <option value="stdin">Stdin-based (Legacy)</option>
+                </select>
+                <p class="text-sm text-gray-600 mt-1">Function-based: Students implement a function. Stdin-based: Students read from input().</p>
+            </div>
+            
+            <div id="function_signature_field" class="mb-6">
+                <label for="function_signature" class="block text-gray-700 font-semibold mb-2">Function Signature *</label>
+                <textarea id="function_signature" 
+                          name="function_signature" 
+                          rows="2"
+                          class="input-field w-full code-editor"
+                          placeholder="def twoSum(nums: List[int], target: int) -> List[int]:"></textarea>
+                <p class="text-sm text-gray-600 mt-1">Enter the function signature students need to implement (LeetCode-style).</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="problem_statement" class="block text-gray-700 font-semibold mb-2">Problem Statement *</label>
+                <textarea id="problem_statement" 
+                          name="problem_statement" 
+                          required
+                          rows="8"
+                          class="w-full px-4 py-2 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 code-editor"
+                          placeholder="Write the complete problem statement here..."></textarea>
+                <p class="text-sm text-gray-600 mt-1">Describe the problem clearly. Test cases will be auto-generated.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="constraints" class="block text-gray-700 font-semibold mb-2">Constraints</label>
+                <textarea id="constraints" 
+                          name="constraints" 
+                          rows="3"
+                          class="input-field w-full"
+                          placeholder="e.g., 2 <= nums.length <= 10^4, -10^9 <= nums[i] <= 10^9"></textarea>
+                <p class="text-sm text-gray-600 mt-1">Specify constraints to help generate better test cases.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <label for="sample_input" class="block text-gray-700 font-semibold mb-2">Sample Input</label>
+                    <textarea id="sample_input" 
+                              name="sample_input" 
+                              rows="4"
+                              class="w-full px-4 py-2 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 code-editor"
+                              placeholder='For function-based: [[2,7,11,15], 9]&#10;For stdin-based: 5&#10;1 2 3 4 5'></textarea>
+                    <p class="text-xs text-gray-600 mt-1">Function-based: JSON array of arguments. Stdin-based: Plain text input.</p>
+                </div>
+                
+                <div>
+                    <label for="sample_output" class="block text-gray-700 font-semibold mb-2">Sample Output</label>
+                    <textarea id="sample_output" 
+                              name="sample_output" 
+                              rows="4"
+                              class="w-full px-4 py-2 border-2 border-orange-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 code-editor"
+                              placeholder='For function-based: [0, 1]&#10;For stdin-based: 15'></textarea>
+                    <p class="text-xs text-gray-600 mt-1">Function-based: JSON return value. Stdin-based: Plain text output.</p>
+                </div>
+            </div>
+            
+            <div class="rounded-lg p-4 mb-6" style="background: rgba(170, 175, 203, 0.1); border-left: 4px solid #AAAFCB;">
+                <p class="text-sm" style="color: #5F4B35;">
+                    <strong>Note:</strong> Test cases will be automatically generated based on your problem type, function signature, and constraints. 
+                    You can regenerate them later if needed.
+                </p>
+            </div>
+            
+            <script>
+            function toggleProblemType() {
+                const problemType = document.getElementById('problem_type').value;
+                const functionField = document.getElementById('function_signature_field');
+                const functionInput = document.getElementById('function_signature');
+                
+                if (problemType === 'function') {
+                    functionField.style.display = 'block';
+                    functionInput.required = true;
+                } else {
+                    functionField.style.display = 'none';
+                    functionInput.required = false;
+                }
+            }
+            // Initialize on page load
+            toggleProblemType();
+            </script>
+            
+            <div class="flex space-x-4">
+                <button type="submit" 
+                        class="btn-primary px-8 py-3 rounded-lg">
+                    Create Quiz
+                </button>
+                <a href="{{ url_for('teacher.dashboard') }}" 
+                   class="btn-secondary px-8 py-3 rounded-lg">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

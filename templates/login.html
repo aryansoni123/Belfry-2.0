@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Belfry{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-16">
+    <div class="card p-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome to Belfry</h1>
+            <p class="text-gray-600">Sign in to continue</p>
+        </div>
+        
+        <form method="POST" action="{{ url_for('auth.login') }}">
+            <div class="mb-5">
+                <label for="username" class="block text-gray-700 font-medium mb-2 text-sm">Username</label>
+                <input type="text" 
+                       id="username" 
+                       name="username" 
+                       required
+                       class="input-field w-full"
+                       placeholder="Enter your username"
+                       autofocus>
+            </div>
+            
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 font-medium mb-2 text-sm">Password</label>
+                <input type="password" 
+                       id="password" 
+                       name="password" 
+                       required
+                       class="input-field w-full"
+                       placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" 
+                    class="w-full btn-primary py-3 px-4 rounded-lg">
+                Sign In
+            </button>
+        </form>
+        
+        <div class="mt-8 p-4 rounded-lg" style="background: rgba(170, 175, 203, 0.1); border-left: 4px solid #AAAFCB;">
+            <p class="text-sm font-semibold mb-3" style="color: #5F4B35;">Demo Accounts:</p>
+            <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between">
+                    <span style="color: #918E46;">Teacher:</span>
+                    <code class="bg-white px-2 py-1 rounded font-mono" style="color: #5F4B35;">teacher / teacher123</code>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span style="color: #918E46;">Student:</span>
+                    <code class="bg-white px-2 py-1 rounded font-mono" style="color: #5F4B35;">student / student123</code>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard - Belfry{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+    <h1 class="text-4xl font-bold text-gray-900 mb-2">Available Quizzes</h1>
+    <p class="text-gray-600">Practice coding problems and improve your skills</p>
+</div>
+
+{% if quiz_status %}
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {% for item in quiz_status %}
+        <div class="card p-6">
+            <h2 class="text-xl font-bold text-gray-900 mb-3">{{ item.quiz.title }}</h2>
+            <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">{{ item.quiz.description or item.quiz.problem_statement[:150] }}...</p>
+            
+            <div class="mb-4">
+                {% if item.submission %}
+                    {% if item.status == 'pass' %}
+                        <span class="inline-flex items-center bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-sm font-semibold">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                            </svg>
+                            Passed
+                        </span>
+                    {% elif item.status == 'fail' %}
+                        <span class="inline-flex items-center bg-red-100 text-red-800 px-3 py-1.5 rounded-full text-sm font-semibold">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                            </svg>
+                            Failed
+                        </span>
+                    {% else %}
+                        <span class="inline-flex items-center bg-amber-100 text-amber-800 px-3 py-1.5 rounded-full text-sm font-semibold">
+                            Pending
+                        </span>
+                    {% endif %}
+                    <p class="text-xs text-gray-500 mt-2">
+                        Last attempt: {{ item.submission.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+                    </p>
+                {% else %}
+                    <span class="inline-flex items-center bg-gray-100 text-gray-700 px-3 py-1.5 rounded-full text-sm font-semibold">
+                        Not Attempted
+                    </span>
+                {% endif %}
+            </div>
+            
+            <a href="{{ url_for('student.solve_quiz', quiz_id=item.quiz.id) }}" 
+               class="block w-full btn-primary text-center py-2.5 px-4 rounded-lg transition">
+                {% if item.submission %}Retry Quiz{% else %}Solve Quiz{% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card p-12 text-center">
+        <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <p class="text-gray-600 text-lg">No quizzes available at the moment.</p>
+        <p class="text-gray-500 text-sm mt-2">Check back later for new problems.</p>
+    </div>
+{% endif %}
+{% endblock %}

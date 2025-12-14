@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Belfry - Coding Assessment Platform{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        .code-editor, code, pre {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+        }
+        body {
+            background: #fafafa;
+        }
+        .nav-gradient {
+            background: linear-gradient(135deg, #5AA07B 0%, #918E46 100%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12), 0 2px 4px rgba(0,0,0,0.08);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #5AA07B 0%, #918E46 100%);
+            color: white;
+            font-weight: 500;
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(90, 160, 123, 0.2);
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(90, 160, 123, 0.3);
+        }
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            font-weight: 500;
+            padding: 10px 24px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        .input-field {
+            border: 1.5px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 12px 16px;
+            transition: all 0.2s;
+            background: #ffffff;
+        }
+        .input-field:focus {
+            outline: none;
+            border-color: #5AA07B;
+            box-shadow: 0 0 0 3px rgba(90, 160, 123, 0.1);
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="nav-gradient text-white">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-8">
+                    <a href="{{ url_for('index') }}" class="text-2xl font-bold tracking-tight">Belfry</a>
+                    {% if current_user.is_authenticated %}
+                        <div class="flex items-center space-x-6">
+                            {% if current_user.role == 'teacher' %}
+                                <a href="{{ url_for('teacher.dashboard') }}" class="text-sm font-medium hover:opacity-80 transition">Dashboard</a>
+                                <a href="{{ url_for('teacher.create_quiz') }}" class="text-sm font-medium hover:opacity-80 transition">Create Quiz</a>
+                            {% else %}
+                                <a href="{{ url_for('student.dashboard') }}" class="text-sm font-medium hover:opacity-80 transition">Dashboard</a>
+                                <a href="{{ url_for('student.my_submissions') }}" class="text-sm font-medium hover:opacity-80 transition">My Submissions</a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if current_user.is_authenticated %}
+                        <span class="text-sm text-white/90">Welcome, <strong>{{ current_user.username }}</strong></span>
+                        <a href="{{ url_for('auth.logout') }}" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('auth.login') }}" class="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-medium transition">Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mx-auto px-6 mt-6">
+                {% for category, message in messages %}
+                    <div class="card mb-4 p-4 {% if category == 'error' %}bg-red-50 border-l-4 border-red-500 text-red-800{% elif category == 'success' %}bg-green-50 border-l-4 border-green-500 text-green-800{% else %}" style="background: rgba(170, 175, 203, 0.1); border-left: 4px solid #AAAFCB; color: #5F4B35;"{% endif %}>
+                        <div class="flex items-center">
+                            <span class="font-medium">{{ message }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-16 py-8" style="background: linear-gradient(135deg, #5F4B35 0%, #918E46 100%); color: rgba(255, 255, 255, 0.9);">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8 mb-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-3" style="color: #AAAFCB;">Belfry</h3>
+                    <p class="text-sm opacity-90">Coding assessment platform designed for college students to practice and improve their programming skills.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3" style="color: #AAAFCB;">Quick Links</h4>
+                    <ul class="space-y-2 text-sm">
+                        {% if current_user.is_authenticated %}
+                            {% if current_user.role == 'teacher' %}
+                                <li><a href="{{ url_for('teacher.dashboard') }}" class="hover:opacity-80 transition">Dashboard</a></li>
+                                <li><a href="{{ url_for('teacher.create_quiz') }}" class="hover:opacity-80 transition">Create Quiz</a></li>
+                            {% else %}
+                                <li><a href="{{ url_for('student.dashboard') }}" class="hover:opacity-80 transition">Dashboard</a></li>
+                                <li><a href="{{ url_for('student.my_submissions') }}" class="hover:opacity-80 transition">My Submissions</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="{{ url_for('auth.login') }}" class="hover:opacity-80 transition">Login</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3" style="color: #AAAFCB;">About</h4>
+                    <p class="text-sm opacity-90">Built with ❤️ for students in India. Practice coding problems, improve your skills, and ace your assessments.</p>
+                </div>
+            </div>
+            <div class="border-t pt-6 text-center" style="border-color: rgba(255, 255, 255, 0.2);">
+                <p class="text-sm opacity-80">&copy; 2025 Belfry. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+
