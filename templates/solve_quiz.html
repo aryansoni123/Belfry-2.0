@@ -48,9 +48,9 @@
         <a href="{{ url_for('student.dashboard') }}" class="text-gray-600 hover:text-gray-900 font-medium transition">← Back to Dashboard</a>
         {% if previous_submission %}
             {% if previous_submission.status == 'pass' %}
-                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">✓ Previously Passed</span>
+                <span class="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">Previously Passed</span>
             {% else %}
-                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold">✗ Previous Attempt Failed</span>
+                <span class="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold">Previous Attempt Failed</span>
             {% endif %}
         {% endif %}
     </div>
@@ -70,15 +70,15 @@
                 <pre class="text-sm bg-gray-900 text-green-400 p-3 rounded border code-editor overflow-x-auto">{{ quiz.function_signature }}</pre>
                 <p class="text-xs mt-2 mb-3" style="color: #918E46;">Implement this function. Do not change the function signature.</p>
                 <details class="text-xs">
-                    <summary class="font-medium cursor-pointer hover:opacity-80" style="color: #5F4B35;">📝 Code Format Example</summary>
+                    <summary class="font-medium cursor-pointer hover:opacity-80" style="color: #5F4B35;">Code Format Example</summary>
                     <div class="mt-3 p-3 bg-white rounded border" style="border-color: #AAAFCB;">
-                        <p class="font-semibold mb-2" style="color: #5F4B35;">✅ Correct Format:</p>
+                        <p class="font-semibold mb-2" style="color: #5F4B35;">Correct Format:</p>
                         <pre class="text-xs bg-gray-900 text-green-400 p-2 rounded overflow-x-auto">from typing import List
 
 {{ quiz.function_signature }}
     # Your solution here
     return result  # Return, don't print!</pre>
-                        <p class="text-red-700 font-semibold mt-3 mb-2">❌ Don't Do This:</p>
+                        <p class="text-red-700 font-semibold mt-3 mb-2">Don't Do This:</p>
                         <ul class="space-y-1 list-disc list-inside" style="color: #918E46;">
                             <li>Don't add <code class="bg-gray-100 px-1 rounded">if __name__ == "__main__":</code></li>
                             <li>Don't use <code class="bg-gray-100 px-1 rounded">input()</code> or <code class="bg-gray-100 px-1 rounded">print()</code></li>
@@ -140,7 +140,7 @@
                     <button id="submit-btn" 
                             class="btn-primary flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
                         <span id="submit-spinner" class="spinner hidden"></span>
-                        <span id="submit-btn-text">✓ Submit</span>
+                        <span id="submit-btn-text">Submit</span>
                     </button>
                     <div class="flex-1"></div>
                     <span class="text-xs text-gray-500">Ctrl+Enter: Run | Ctrl+S: Submit</span>
@@ -231,9 +231,9 @@ function setLoading(button, isLoading) {
         btn.disabled = false;
         spinner.classList.add('hidden');
         if (button === 'run') {
-            text.textContent = '▶ Run';
+            text.textContent = 'Run';
         } else {
-            text.textContent = '✓ Submit';
+            text.textContent = 'Submit';
         }
     }
 }
@@ -270,13 +270,13 @@ function displayTestResults(testcaseResults) {
         if (result.passed) {
             html += `
                 <div class="test-result-item p-4 bg-green-50 border-l-4 border-green-500 rounded-lg">
-                    <p class="font-semibold text-green-800">Test Case ${testNum}: ✅ Passed</p>
+                    <p class="font-semibold text-green-800">Test Case ${testNum}: Passed</p>
                 </div>
             `;
         } else {
             html += `
                 <div class="test-result-item p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
-                    <p class="font-semibold text-red-800 mb-2">Test Case ${testNum}: ❌ Failed</p>
+                    <p class="font-semibold text-red-800 mb-2">Test Case ${testNum}: Failed</p>
                     ${result.error ? `<p class="text-sm text-red-600 mb-2">${result.error}</p>` : ''}
                     <div class="grid md:grid-cols-2 gap-3 mt-2">
                         <div>
@@ -344,11 +344,11 @@ async function runCode() {
     isRunning = true;
     setLoading('run', true);
     showResultsPanel();
-    showConsoleOutput('⏳ Running your code...', 'info');
+    showConsoleOutput('Running your code...', 'info');
     
     try {
         if (!pyodide) {
-            showConsoleOutput('⏳ Loading Python runtime...', 'info');
+            showConsoleOutput('Loading Python runtime...', 'info');
             await initPyodide();
         }
         
@@ -400,13 +400,13 @@ async function runCode() {
         
         const allPassed = passedCount === testcases.length;
         showConsoleOutput(
-            allPassed ? `✅ All ${testcases.length} passed!` : `❌ Passed ${passedCount}/${testcases.length}`,
+            allPassed ? `All ${testcases.length} passed!` : `Passed ${passedCount}/${testcases.length}`,
             allPassed ? 'success' : 'error'
         );
         displayTestResults(results);
         document.getElementById('results-panel').scrollIntoView({ behavior: 'smooth' });
     } catch (error) {
-        showConsoleOutput(`❌ Error: ${error.message}`, 'error');
+        showConsoleOutput(`Error: ${error.message}`, 'error');
     } finally {
         isRunning = false;
         setLoading('run', false);
@@ -433,7 +433,7 @@ async function submitCode() {
     isSubmitting = true;
     setLoading('submit', true);
     showResultsPanel();
-    showConsoleOutput('⏳ Submitting your solution...', 'info');
+    showConsoleOutput('Submitting your solution...', 'info');
     
     try {
         const response = await fetch(`/student/quiz/${quizId}/submit`, {
@@ -450,7 +450,7 @@ async function submitCode() {
         const data = await response.json();
         
         if (data.error) {
-            showConsoleOutput(`❌ Error: ${data.error}`, 'error');
+            showConsoleOutput(`Error: ${data.error}`, 'error');
             isSubmitting = false;
             setLoading('submit', false);
             return;
@@ -459,8 +459,8 @@ async function submitCode() {
         // Display results
         const allPassed = data.status === 'pass';
         const statusMsg = allPassed
-            ? `✅ Accepted! Passed ${data.passed_testcases}/${data.total_testcases} test cases.`
-            : `❌ Wrong Answer. Passed ${data.passed_testcases}/${data.total_testcases} test cases.`;
+            ? `Accepted! Passed ${data.passed_testcases}/${data.total_testcases} test cases.`
+            : `Wrong Answer. Passed ${data.passed_testcases}/${data.total_testcases} test cases.`;
         
         showConsoleOutput(statusMsg, allPassed ? 'success' : 'error');
         
@@ -484,7 +484,7 @@ async function submitCode() {
         
     } catch (error) {
         console.error('Error:', error);
-        showConsoleOutput('❌ Error submitting solution. Please try again.', 'error');
+        showConsoleOutput('Error submitting solution. Please try again.', 'error');
     } finally {
         isSubmitting = false;
         setLoading('submit', false);
