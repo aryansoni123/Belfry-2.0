@@ -9,7 +9,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///belfry.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # Docker configuration for code execution (LeetCode-style)
-    DOCKER_IMAGE = 'python:3.13-slim'
+    DOCKER_IMAGE = os.environ.get('DOCKER_IMAGE') or 'belfry-sandbox:latest'
     DOCKER_TIMEOUT = 2  # seconds per test case
     DOCKER_MEMORY_LIMIT = '256m'  # Memory limit per container
     DOCKER_CPU_QUOTA = 50000  # 50% CPU

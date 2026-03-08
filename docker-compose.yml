@@ -1,0 +1,25 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - DOCKER_IMAGE=belfry-sandbox:latest
+    depends_on:
+      - sandbox
+
+  sandbox:
+    build:
+      context: .
+      dockerfile: Dockerfile.sandbox
+    image: belfry-sandbox:latest
+    # This service doesn't need to run; it just needs to be built
+    # so the 'web' service can use the image.
+    command: ["echo", "Sandbox image built successfully"]
